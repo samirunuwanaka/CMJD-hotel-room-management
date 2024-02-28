@@ -25,7 +25,7 @@ public class HotelRoomManagementSystems {
             try {
                 SessionFactoryConfiguration.getInstance();
             } catch (Exception e) {
-                DBCreatorMySQLCode.createDBifNotExists();
+                DBCreatorMySQLCode.createDbifNotExists();
             }
 //            new CheckInView().setVisible(true);
 //            new View.BookingView().setVisible(true);

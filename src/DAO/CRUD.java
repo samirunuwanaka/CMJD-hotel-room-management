@@ -78,7 +78,7 @@ public class CRUD {
         SimpleDateFormat dateFormat = new SimpleDateFormat(CRUD.date);
         return dateFormat.parse(getDate);
     }
-
+    
     public static Date getSystemDateStringToWithTime(String getDate) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(CRUD.dateWithTime);
         return dateFormat.parse(getDate);

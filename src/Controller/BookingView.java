@@ -14,6 +14,7 @@ import java.util.List;
 import java.sql.ResultSet;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -146,8 +147,17 @@ public class BookingView {
         }
     }
 
-    public static boolean tryDelete(String roomNo, String date) throws SQLException {
-        return CRUD.delete(roomNo, date);
+    public static boolean tryDelete(String roomNo, String date) throws SQLException, ParseException {
+        if (getTimeDiference(date) < 1) {
+            return CRUD.delete(roomNo, date);
+        } else {
+            return false;
+        }
     }
-
+    
+    private static long getTimeDiference(String date) throws ParseException {
+        long diffInMillies = Math.abs(CRUD.getSystemDateDate().getTime() - CRUD.getSystemDateStringToWithTime(date).getTime());
+        return TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    }
+    
 }

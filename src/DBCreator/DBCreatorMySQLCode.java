@@ -15,8 +15,19 @@ import java.sql.SQLException;
  */
 public class DBCreatorMySQLCode {
 
-    private static boolean createDBifNotExists(String sql) throws SQLException {
+    private static void createtableifNotExists(String sql) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            // Set any necessary parameters for your SQL statement
+            // For example:
+            // preparedStatement.setString(1, "some_value");
+            // preparedStatement.setInt(2, 42);
+            preparedStatement.executeUpdate();
+        }
+    }
+    
+    private static boolean createDBifNotExists(String sql) throws SQLException {
+        Connection connection = DBConnection.getInstance().getDataBaseAccess();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             // Set any necessary parameters for your SQL statement
             // For example:
@@ -31,15 +42,16 @@ public class DBCreatorMySQLCode {
         }
     }
 
-    public static void createDBifNotExists() throws SQLException {
-        if (createDBifNotExists("CREATE DATABASE IF NOT EXISTS hotelRoomManagement")) {
-            createDBifNotExists("CREATE TABLE `Admin Data` (\n"
+    public static void createDbifNotExists() throws SQLException {
+        if (createDBifNotExists("CREATE DATABASE IF NOT EXISTS Hotel Room Management")) {
+            createtableifNotExists("USE hotel Room Management;");
+            createtableifNotExists("CREATE TABLE `Admin Data` (\n"
                     + "    `Admin Id` INT AUTO_INCREMENT PRIMARY KEY,\n"
                     + "    `Name` VARCHAR(20) NOT NULL,\n"
                     + "    `Username` VARCHAR(15) NOT NULL,\n"
                     + "    `Password` VARCHAR(15) NOT NULL\n"
                     + ");");
-            createDBifNotExists("CREATE TABLE `Customer_Data` (\n"
+            createtableifNotExists("CREATE TABLE `Customer_Data` (\n"
                     + "  `Cust_ID` INT AUTO_INCREMENT PRIMARY KEY,\n"
                     + "  `Name` VARCHAR(20) NOT NULL,\n"
                     + "  `ID` VARCHAR(12) NOT NULL UNIQUE,\n"
@@ -48,36 +60,36 @@ public class DBCreatorMySQLCode {
                     + "  `Username` VARCHAR(15) NOT NULL UNIQUE,\n"
                     + "  `Password` VARCHAR(15) NOT NULL\n"
                     + ");");
-            createDBifNotExists("CREATE TABLE `Purchase_Data` (\n"
+            createtableifNotExists("CREATE TABLE `Purchase_Data` (\n"
                     + "  `Purchase_Date` DATE NOT NULL,\n"
                     + "  `Room_ID` AUTO_INCREMENT VARCHAR(255) UNIQUE,\n"
                     + "  PRIMARY KEY (`Room_ID`),\n"
                     + " FOREIGN KEY (Cust_ID) REFERENCES Customer Data (Cust_ID)\n"
                     + ");");
-            createDBifNotExists("CREATE TABLE `Check_In_Data` (\n"
+            createtableifNotExists("CREATE TABLE `Check_In_Data` (\n"
                     + "  `DataInsertID` INT AUTO_INCREMENT PRIMARY KEY,\n"
                     + "  `Checked_In` BOOLEAN DEFAULT FALSE NOT NULL,\n"
                     + " FOREIGN KEY (Room ID) REFERENCES Purchase_Data (Room ID),\n"
                     + " FOREIGN KEY (Cust_ID) REFERENCES Customer Data (Cust_ID),\n"
                     + " FOREIGN KEY (Admin Id) REFERENCES Admin Data (Admin Id),\n"
                     + ");");
-            createDBifNotExists("CREATE TABLE `Dinning Packages` (\n"
+            createtableifNotExists("CREATE TABLE `Dinning Packages` (\n"
                     + "  `Dinning Pakage` VARCHAR(15) NOT NULL,\n"
                     + "  `Charge` DECIMAL(5,2),\n"
                     + "  PRIMARY KEY (`Dinning Pakage`)\n"
                     + ");");
-            createDBifNotExists("CREATE TABLE `Room_Packages` (\n"
+            createtableifNotExists("CREATE TABLE `Room_Packages` (\n"
                     + "  `Room_Type` VARCHAR(10) NOT NULL,\n"
                     + "  `Charge` DECIMAL(5,2) NOT NULL,\n"
                     + "  PRIMARY KEY (`Room Type`)\n"
                     + ");");
-            createDBifNotExists("CREATE TABLE `Rooms_Data` (\n"
+            createtableifNotExists("CREATE TABLE `Rooms_Data` (\n"
                     + "  `Room_No` VARCHAR(5) NOT NULL,\n"
                     + "  `Floor_No` INT NOT NULL,\n"
                     + "  PRIMARY KEY (`Room No`),\n"
                     + " FOREIGN KEY (Room Type) REFERENCES Dinning Packages (Room Type)\n"
                     + ");");
-            createDBifNotExists("CREATE TABLE `Purchase_Detail` (\n"
+            createtableifNotExists("CREATE TABLE `Purchase_Detail` (\n"
                     + "  `Room_Type` VARCHAR(255) NOT NULL,\n"
                     + "  `Date` DATE NOT NULL,\n"
                     + "  `Dinning_Package` VARCHAR(255) NOT NULL,\n"
